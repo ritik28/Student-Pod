@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Student Data</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@900&display=swap" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <style>
+    body {
+      font-family: "Lato", sans-serif;
+      color: black;
+    }
+    
+    .sidenav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #111;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
+    
+    .sidenav a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 20px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+    
+    .sidenav a:hover {
+      color: #f1f1f1;
+    }
+    
+    .sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+    }
+    
+    @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+    }
+    .btn-done {
+      background-color: crimson;
+      display: none;
+    }
+    .btn-edit
+    {
+      display: block;
+    }
+    .btn-del{
+      background-color: rgb(179, 64, 64);
+    }
+    </style>
+</head>
+<body  style ="background: #C33764;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #1D2671, #C33764);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #1D2671, #C33764); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */">
+    <span style="font-size:30px;cursor:pointer;padding-left:10px;color:white;" onclick="openNav()">&#9776;</span>
+
+<script>
+  
+function putCall(sid1,sname1,reg1,course1,fees1,age1,address1){
+        
+var formData = {sid: sid1,sname:sname1,reg:reg1,course:course1,fees:fees1,age: age1,address:address1}; //Array 
+console.log(formData);
+$.ajax({
+url : "http://localhost:8080/studentx",
+type: "put",
+data : formData,
+success: function(data, textStatus, jqXHR)
+{
+    //data - response from server
+console.log(data+" "+textStatus);
+},
+error: function (jqXHR, textStatus, errorThrown)
+{
+
+}});
+    }
+function delitem(e)
+{
+  var formData = {sid: e}
+  $.ajax({
+url : "http://localhost:8080/studentx",
+type: "delete",
+data : formData,
+success: function(data, textStatus, jqXHR)
+{
+    //data - response from server
+console.log(data+" "+textStatus);
+},
+error: function (jqXHR, textStatus, errorThrown)
+{
+
+}});
+}
+var student_count;
+
+$(document).ready(function(){
+  console.log("inside");
+  if(window.localStorage.logged == true && window.localStorage.power <3){
+          $('#log').text('Log in');
+        }else
+        {
+          $('#log').text('Logout');
+        }
+  $.ajax({
+      type: 'GET',
+      url: "http://localhost:8080/student",
+      contentType: "application/x-www-form-urlencoded",
+      success: function(resultData) { 
+  $("#scount").html(resultData.length);
+          console.log(resultData);
+          var table='<table >'+       
+            '<tr >'+
+                '<th>Student Name&nbsp;</th>'+
+                '<th>Age&nbsp;</th>'+
+                '<th>Course&nbsp;</th>'+
+                '<th>Registration No.&nbsp;</th>'+
+                '<th>Fees&nbsp;</th>'+
+                '<th>Address&nbsp;</th>'+
+                '<th>Edit&nbsp;</th>'+
+            '</tr>';
+for(let x in resultData){
+ 
+table+= '<tr><td><input id="'+resultData[x].sid+'sname" value="'+resultData[x].sname+'" class="inpu'+resultData[x].sid+'" disabled></td><td><br>&nbsp;<input id="'+resultData[x].sid+'age" style="width:108px"value="'+resultData[x].age+'" class="inpu'+resultData[x].sid+'" disabled> &nbsp;</td><td><br>&nbsp;<input value="'+resultData[x].course+'" id="'+resultData[x].sid+'course"  class="inpu'+resultData[x].sid+'" disabled> &nbsp;</td><td><br>&nbsp;<input id="'+resultData[x].sid+'reg" value="'+resultData[x].reg+'" class="inpu'+resultData[x].sid+'" disabled> &nbsp; </td><td><br>&nbsp;<input value="'+resultData[x].fees+'" id="'+resultData[x].sid+'fees" class="inpu'+resultData[x].sid+'" disabled> &nbsp;</td><td><br>&nbsp;<input value="'+resultData[x].address+'" id="'+resultData[x].sid+'address" class="inpu'+resultData[x].sid+'" disabled> &nbsp;</td><td><button  class="btn btn-default btn-edit" style=" padding-top: 3px; padding-bottom: 3px;" onclick=\'$(".inpu'+resultData[x].sid+'").prop("disabled",false);if($(this).text()=="edit"){$(this).text("done");}else{$(this).text("edit"); $(".inpu'+resultData[x].sid+'").prop("disabled",true); putCall('+resultData[x].sid+',$("#'+resultData[x].sid+'sname").val(),$("#'+resultData[x].sid+'reg").val(),$("#'+resultData[x].sid+'course").val(),$("#'+resultData[x].sid+'fees").val(),$("#'+resultData[x].sid+'age").val(),$("#'+resultData[x].sid+'address").val())}\'>Edit</button></td><td><button class="btn btn-warning"  style="padding-top: 3px;padding-bottom: 3px;" onclick="delitem('+resultData[x].sid+')">Delete</button></td></tr>';
+}
+table+="</table>"
+$("#showstudent").html(table);
+
+if(window.localStorage.logged== 'true' && window.localStorage.power <3)
+{
+  $('.btn-primary').prop('disabled',false);
+}
+else {
+  $('.btn-primary').prop('disabled',true);
+}
+          
+       }
+        });
+});
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+function loglogout(){
+if(window.localStorage.logged=='true'){
+$('#loginid').text('Login');
+$('#loginid').attr('href','./Login.html');
+
+window.localStorage.logged=false;
+alert("You have been Logged out!");
+}else{
+$('#loginid').text('Logout');
+window.location.href = "./Login.html"
+}
+}
+</script>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="javascript:loglogout()" onlick="" id="loginid">Logout</a>
+        <a href="./index.html">Dashboard</a>
+        <a href="./ShowStudent.html">Show Students</a>
+        <a href="./UploadSyllabus.html">Upload Syllabus</a>
+        <a href="./UploadVT.html">Upload Video Tutorial</a>
+        <a href="./UploadNotes.html">Upload Notes</a>
+        <a href="./Addstudent.html">Add Student</a>
+        <a href="./AddCourse.html">Add Course</a>
+        <a href="./ShowCourse.html">Courses</a>
+        <a href="./ShowVideo.html">Watch Tutorials</a>      
+                
+      </div>
+      
+<div class="jumbotron text-center">
+  <h1 style="text-align:center; color: #1D2671">Students</h1>
+  
+</div>
+  
+<div class="container">
+    
+  <div class="row">
+    <div class="col-sm-4">
+      
+        
+    </div>
+    <div class="col-sm-4">
+      
+     <div style="text-align: center;">
+      <h3 style="text-align:center; color: white;">Total No. of Students</h3>
+      <h1 style=" font-variant-numeric: tabular-nums; font-size: 90px; color: white;" id="scount"></h1></div>
+    </div>
+    </div>
+  <div class="row" >
+    <div class="col-md-12">
+      <div id="showstudent">
+
+      </div>
+        
+    </div>
+  </div> 
+
+  </div>
+</div>
+
+</body>
+</html>

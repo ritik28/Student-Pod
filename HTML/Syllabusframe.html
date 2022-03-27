@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Course</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@900&display=swap" rel="stylesheet">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <style>
+    body {
+      font-family: "Lato", sans-serif;
+    }
+    
+    .sidenav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #111;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
+    
+    .sidenav a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 20px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+    
+    .sidenav a:hover {
+      color: #f1f1f1;
+    }
+    
+    .sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+    }
+    
+    @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+    }
+    .btn-done {
+      background-color: crimson;
+      display: none;
+    }
+    .btn-edit
+    {
+      display: block;
+    }
+    .btn-del{
+      background-color: rgb(179, 64, 64);
+    }
+    </style>
+    <script>
+      $(document).ready(()=>{
+
+        $.ajax({
+      type: 'GET',
+      url: "http://localhost:8080/syllabus",
+      contentType: "application/x-www-form-urlencoded",
+      success: function(resultData) { 
+          console.log(resultData);
+          let html = "";
+          let c=0;
+          Object.values(resultData).forEach(element => {
+            html += "<hr><tr><td ><span onhover='$(`'span"+c+"'`).toggle(); $(`'x"+c+"'`).toggle(); ' onblur='$(`'span"+c+"'`).toggle(); $(`'x"+c+"'`).toggle(); ' id='span"+c+"' >"+element+"</span><marquee id='x"+c+"' hidden>"+element+"</marquee></td><td> </td><td>&nbsp;<a class='btn btn-warning' href='../syllabus/"+element+"' download='"+element+"'>Download</a></td></tr><br>";
+            c++;
+          });
+         c=0;
+          
+          console.log(html)
+          $('table').append(html);
+       }
+        });   
+
+      });
+      
+    </script>
+</head>
+<body>
+   
+  
+<div class="container">
+    
+  <div class="row">
+    </div>
+    gfcjuymgbyujmkhjb
+  <div class="row" >
+    <div class="col-md-4"></div>
+    <div class="col-md-8">
+
+      <table border="1">
+        
+        <tr><tbody></tbody></tr>
+      </table>
+      <a href="./Syllabus.html" target="_blank">Go to Syllabus Page.</a>
+    </div>
+    <div class="col-md-4"></div>
+  </div> 
+
+  </div>
+</div>
+
+</body>
+</html>

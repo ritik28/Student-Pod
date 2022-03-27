@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Add Student</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@900&display=swap" rel="stylesheet">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+ <style>
+    body {
+      font-family: "Lato", sans-serif;
+      color: white;
+    }
+    
+    .sidenav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: black;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
+    
+    .sidenav a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 20px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+    
+    .sidenav a:hover {
+      color: #f1f1f1;
+    }
+    
+    .sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+    }
+
+    
+    @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+
+     
+    }
+    </style>
+
+</head>
+<body  style ="background: #C33764;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #1D2671, #C33764);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #1D2671, #C33764); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */">
+     <span style="font-size:30px;cursor:pointer;padding-left:10px;" onclick="openNav()">&#9776; </span>
+    <script>
+
+    function getIndexOfK(arr, k) {
+  for (var i = 0; i < arr.length; i++) {
+    var index = arr[i].indexOf(k);
+    if (index > -1) {
+      return [i, index];
+    }
+  }
+}
+function loglogout(){
+if(window.localStorage.logged=='true'){
+$('#loginid').text('Login');
+$('#loginid').attr('href','./Login.html');
+
+window.localStorage.logged=false;
+alert("You have been Logged out!");
+}else{
+$('#loginid').text('Logout');
+window.location.href = "./Login.html"
+}
+}
+
+        $(document).ready(()=>{
+            // localStorage.setItem("logged", "false");
+            if(window.localStorage.logged == 'true' && window.localStorage.power <3) 
+            {
+
+            }else{
+                window.location.href = "./Login.html"
+            }
+            
+        });
+        function postCall(){
+        
+            var formData = {sname:$("#sname").val(),reg:$("#reg").val(),course:$("#course").val(),fees:$("#fees").val(),age: $("#age").val(),address:$("#add").val()}; //Array 
+ console.log(formData);
+$.ajax({
+    url : "http://localhost:8080/student",
+    type: "POST",
+    data : formData,
+    success: function(data, textStatus, jqXHR)
+    {
+        //data - response from server
+console.log(data+" "+textStatus);
+    },
+    error: function (jqXHR, textStatus, errorThrown)
+    {
+ 
+    }});
+        }
+
+    function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+    </script>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="javascript:loglogout()" onlick="" id="loginid">Logout</a>
+        <a href="./index.html">Dashboard</a>
+        <a href="./ShowStudent.html">Show Students</a>
+        <a href="./UploadSyllabus.html">Upload Syllabus</a>
+        <a href="./UploadVT.html">Upload Video Tutorial</a>
+        <a href="./UploadNotes.html">Upload Notes</a>
+        <a href="./Addstudent.html">Add Student</a>
+        <a href="./AddCourse.html">Add Course</a>
+        <a href="./ShowCourse.html">Courses</a>
+        <a href="./ShowVideo.html">Watch Tutorials</a>      
+                
+      </div>
+
+<div class="row"><div class=" col-md-4">
+</div>
+<div class=" col-md-4">    
+<div class="login-form">
+    <form>
+        <h2 class="text-center">Add Student</h2>       
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Student Name" required="required" id="sname">
+        </div>
+        <br>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Registration No." required="required" id="reg">
+        </div>
+        <br>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Course" required="required" id="course">
+        </div>
+        <br>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Fees Paid" required="required" id="fees">
+        </div>
+        <br>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Age" required="required" id="age">
+        </div>
+        <br>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Address" required="required" id="add">
+        </div>
+        <br>
+        <div class="form-group">
+            
+        </div>
+    </form>    
+    <button  class="btn btn-warning btn-block" onclick="postCall()">Add Student</button>
+</div>
+</div>
+<div class=" col-md-4"></div></div>
+
+</body>
+</html>
